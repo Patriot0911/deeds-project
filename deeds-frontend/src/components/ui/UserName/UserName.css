@@ -1,0 +1,6 @@
+.name-box {
+    display: flex;
+    font-weight: 600;
+    font-size: 1rem;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+}

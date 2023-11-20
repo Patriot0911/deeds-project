@@ -1,0 +1,22 @@
+* {
+    padding: 0;
+    margin: 0;
+    --dark-font: #dfdfdf;
+    --dark-back: rgb(38, 39, 41);
+}
+
+.main-wrapper {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+main {
+    background-color: var(--dark-back);
+    color: var(--dark-font);
+    flex-grow: 1;
+    padding: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

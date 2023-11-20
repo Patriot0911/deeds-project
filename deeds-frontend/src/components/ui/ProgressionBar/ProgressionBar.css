@@ -1,0 +1,28 @@
+.back-progress {
+    display: flex;
+    align-items: center;
+    padding: 3px;
+    height: 25px;
+    width: 100%;
+    background-color: #6969699d;
+    border-radius: 50px;
+    position: relative;
+}
+.progress {
+    height: 25px;
+    width: 50%;
+    background-color: rgba(51, 226, 182, 0.712);
+    border-radius: 50px;
+    transition: all 1s ease-in-out;
+}
+.progress-status {
+    position: absolute;
+    text-align: center;
+    width: 100%;
+}
+.progress-name {
+    position: absolute;
+    text-align: start;
+    width: 100%;
+    top: -20px;
+}
