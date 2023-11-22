@@ -8,6 +8,12 @@ import discord, {
 import deedClient from './classes/deedClient';
 
 
+export interface IDeedProgress {
+    id: number;
+    deedId: number;
+    userId: number;
+    progress: number;
+};
 export interface IDeed {
     id: number;
     deedName: string;
@@ -85,6 +91,10 @@ export type TCustomClientProps =  ClientOptions;
 export interface IMySQLSearchParams {
     discordId?: string;
     userId?: number;
+};
+export interface progressCountData {
+    old: number;
+    new: number;
 };
 
 export type TMessageEventInfo = discord.Message | discord.PartialMessage;

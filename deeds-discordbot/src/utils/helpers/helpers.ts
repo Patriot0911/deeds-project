@@ -35,8 +35,8 @@ export const botIntents: GatewayIntentBits[] = [
 
 export const isAdmin = (member: GuildMember) =>
     member.permissions.has(PermissionsBitField.Flags.Administrator);
-export const getAvatar = (member: GuildMember) =>
-`https://cdn.discordapp.com/avatars/${member.user.id}/${member.user.avatar}.png`;
+export const getAvatar = (user: User) =>
+`https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png`;
 
 export const updateComponent = (
     interaction: MessageComponentInteraction,

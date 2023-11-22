@@ -1,6 +1,6 @@
 import { GuildMember } from 'discord.js';
 import { getAvatar } from './helpers';
-import { IDeed, IMySQLSearchParams, IUser } from 'src/types';
+import { IDeed, IDeedProgress, IMySQLSearchParams, IUser } from 'src/types';
 import mysql, { ResultSetHeader } from 'mysql2/promise';
 import 'dotenv/config';
 
@@ -14,21 +14,32 @@ export const getMysqlConnection = async () => {
     return connection;
 };
 
-export const getMySQLDeeds = async (userId?: number) => {
+export const getMySQLDeedProgress = async (userId: number | string, deedId: number | string) => {
+    const connection = await getMysqlConnection();
+    const [rawDeedProgress] = await connection.execute(`
+        SELECT * FROM deedsdb.users_progressions
+        WHERE (deedId = ${deedId} AND userId = ${userId});
+    `);
+    await connection.end();
+    const DeedProgress = rawDeedProgress as IDeedProgress[];
+    if(!DeedProgress || DeedProgress.length < 1)
+        return;
+    return DeedProgress[0];
+};
+export const getMySQLDeeds = async (deedId?: number | string) => {
     const connection = await getMysqlConnection();
     const [rawDeedsList] = await connection.execute(`
         SELECT * FROM deedsdb.deeds
         ${
-            userId && `Where userId = ${userId}`
+            deedId && `Where id = ${deedId}`
         };
     `);
+    await connection.end();
     const deedsList = rawDeedsList as IDeed[];
-    connection.end();
     if(!deedsList || deedsList.length < 1)
         return;
     return deedsList;
 };
-
 export const getMySQLUsers = async (params?: IMySQLSearchParams) => {
     const searchParams = params ?
     (
@@ -56,10 +67,9 @@ export const createMySQLDeed = async (name: string, goal: number) => {
     connection.end();
     return rawNewDeed as ResultSetHeader;
 };
-
 export const createMySQLDeedsUser = async (member: GuildMember) => {
     const connection = await getMysqlConnection();
-    const avatar = getAvatar(member);
+    const avatar = getAvatar(member.user);
     const insertedUser = (await connection.execute(`
         Insert into deedsdb.users (discordId, username, avatar) Values
         ('${member.id}', '${member.displayName}', '${avatar}');
@@ -86,6 +96,29 @@ export const createMySQLDeedsUser = async (member: GuildMember) => {
 
     await connection.end();
     return insertedUser as ResultSetHeader;
+};
+
+export const updateMySQLUserProgress = async(
+    userId: number | string,
+    deedId: number | string,
+    count: number,
+    increment?: boolean
+) => {
+    const connection = await getMysqlConnection();
+    await connection.execute(`
+        UPDATE deedsdb.users_progressions
+        SET
+        ${
+            increment ?
+            `progress = progress + ${count}` :
+            `progress = ${count}`
+        }
+        WHERE (
+            userId = ${userId} AND
+            deedId = ${deedId}
+        );
+    `);
+    await connection.end();
 };
 
 export const deleteMySQLUsers = async (discordId?: string, userId?: number) => {
