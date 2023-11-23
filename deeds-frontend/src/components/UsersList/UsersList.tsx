@@ -1,23 +1,18 @@
-"use client";
-
 import type { IUserInfo } from '@/types';
-import { useEffect, useState } from 'react';
 import User from '../User/User';
 
 import './UsersList.css';
 
-const HOST = 'https://uacommunityhub.top/api';
+const APIURL = 'http://localhost:3001/';
 
-const UsersList = () => {
-    const [users, setUsers] = useState<IUserInfo[]>([]);
-
-    useEffect(() => {
-        fetch(HOST)
-        .then(res => res.json())
-        .then(
-            (value: IUserInfo[]) => setUsers(value)
-        );
-    }, []);
+const UsersList = async() => {
+    const res = await fetch(APIURL, {
+        cache: 'no-store'
+    });
+    if(!res.ok) {
+        throw new Error(`${res.status} ${res.statusText}`);
+    };
+    const users: IUserInfo[] = await res.json();
 
     return (
         <div
