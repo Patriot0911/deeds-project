@@ -1,17 +1,11 @@
 import mysql from 'mysql2/promise';
 import express from 'express';
 import cors from 'cors';
+import dbConnectionInfo from './configs/db.json';
 import { IUserInfo, IDeed, dbDeed, dbUser, dbProgress } from './types';
 
 const app = express();
 const port = 3001;
-
-const dbInfo = {
-    database: 'deedsdb', // database
-    user: 'nextuser', // username
-    password: 'NotRootNextPass_0922', // password
-    host: 'localhost' // host
-};
 
 app.use(cors({
     origin: true,
@@ -53,7 +47,7 @@ app.get('/', async (req, res) => {
 });
 
 const getDbUsers = async () => {
-    const connection = await mysql.createConnection(dbInfo);
+    const connection = await mysql.createConnection(dbConnectionInfo);
     const [rawUsersData] = await connection.execute(`
         Select * from deedsdb.users;
     `);
@@ -63,7 +57,7 @@ const getDbUsers = async () => {
     const [rawDeeds] = await connection.execute(`
         Select * from deedsdb.deeds;
     `);
-    connection.end();
+    await connection.end();
 
     return {
         deeds: rawDeeds as dbDeed[],
@@ -72,4 +66,6 @@ const getDbUsers = async () => {
     };
 };
 
-app.listen(port);
+app.listen(port, () => {
+    console.log(`Server running on port: ${port}`);
+});
