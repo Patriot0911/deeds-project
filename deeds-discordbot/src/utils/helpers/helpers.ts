@@ -1,6 +1,7 @@
 import {
     ActionRowBuilder,
     ButtonBuilder,
+    ButtonStyle,
     EmbedBuilder,
     GatewayIntentBits,
     GuildMember,
@@ -67,6 +68,28 @@ export const findComponentIndices = (interaction: MessageComponentInteraction, c
         };
     }
     return undefined;
+};
+
+export const createAvatarUploader = () => {
+    const updateEmbed = new EmbedBuilder()
+    .setTitle('Avatar Updater')
+    .setDescription('Press the button under this message to upload your new avatar into DataBase')
+    .setColor(`#4287f5`)
+    const avatarUpdateButtonRow = new ActionRowBuilder<ButtonBuilder>();
+    avatarUpdateButtonRow.addComponents(
+        new ButtonBuilder(
+            {
+                style: ButtonStyle.Success,
+                label: 'Update Avatar',
+                emoji: '⬆️',
+                customId: 'updateavatar'
+            }
+        )
+    );
+    return {
+        embeds: [updateEmbed],
+        components: [avatarUpdateButtonRow]
+    }
 };
 
 export const createDeedsManager = async (user: User, userId: number) => {

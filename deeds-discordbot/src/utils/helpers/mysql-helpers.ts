@@ -1,4 +1,4 @@
-import { GuildMember } from 'discord.js';
+import { GuildMember, User } from 'discord.js';
 import { getAvatar } from './helpers';
 import { IDeed, IDeedProgress, IMySQLSearchParams, IUser } from 'src/types';
 import mysql, { ResultSetHeader } from 'mysql2/promise';
@@ -98,6 +98,16 @@ export const createMySQLDeedsUser = async (member: GuildMember) => {
     return insertedUser as ResultSetHeader;
 };
 
+
+export const updateMySQLUserAvatar = async (user: User) => {
+    const connection = await getMysqlConnection();
+    await connection.execute(`
+        UPDATE deedsdb.users
+        SET avatar = "${getAvatar(user)}"
+        WHERE discordId = ${user.id};
+    `);
+    connection.end();
+};
 export const updateMySQLUserProgress = async(
     userId: number | string,
     deedId: number | string,

@@ -1,5 +1,5 @@
 import { ApplicationCommandOptionType, ChatInputCommandInteraction } from "discord.js";
-import { createMySQLDeedsUser, deleteMySQLUsers, getMySQLUsers, getMysqlConnection } from "../utils/helpers/mysql-helpers";
+import { createMySQLDeedsUser, deleteMySQLUsers, getMySQLUsers } from "../utils/helpers/mysql-helpers";
 import deedClient from "../classes/deedClient";
 import { createDeedsManager } from "../utils/helpers/helpers";
 import { TCommandInfo } from "../types";
@@ -13,7 +13,6 @@ export default async function callBack(
 
     if(!user || !interaction.guild)
         return;
-    const connection = await getMysqlConnection();
     const selectedUsers = await getMySQLUsers(
         {
             discordId: user.id
@@ -27,7 +26,6 @@ export default async function callBack(
                 ephemeral: true,
                 content: 'This user is already in db'
             });
-            await connection.end();
             return;
         }
     };
@@ -38,7 +36,6 @@ export default async function callBack(
     if(!userData)
         return;
     const userManager = await createDeedsManager(user, userData.insertId);
-    await connection.end();
     if(userManager) {
         await interaction.channel?.send({
             ...userManager
