@@ -1,15 +1,11 @@
 import { IProgressionBarProps } from "@/types";
-import { useState, useEffect } from "react";
 
 import './ProgressionBar.css';
 
-const ProgressionBar = (props: IProgressionBarProps) => {
-    const [progress, setProgress] = useState(0);
+const getProgress = (current: number, goal: number) => current/goal > 1.0 ? 100 : Math.floor(current/goal*100);
 
-    useEffect(() => {
-        const getProgress = () => props.current/props.goal > 1.0 ? 100 : Math.floor(props.current/props.goal*100);
-        setProgress(getProgress());
-    }, [props.goal, props.current]);
+const ProgressionBar = (props: IProgressionBarProps) => {
+    const progress = getProgress(props.current, props.goal);
 
     return (
         <div
@@ -26,7 +22,7 @@ const ProgressionBar = (props: IProgressionBarProps) => {
             <div
                 className={'progress'}
                 style={{
-                    width: `${progress}%`
+                    width: `${progress < 2 ? 2 : progress}%`
                 }}
             />
         </div>

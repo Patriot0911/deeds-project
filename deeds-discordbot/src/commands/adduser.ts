@@ -19,7 +19,7 @@ export default async function callBack(
             discordId: user.id
         }
     );
-    if(!selectedUsers || selectedUsers.length < 1) {
+    if(selectedUsers && selectedUsers.length > 0) {
         if(options.getBoolean('deletable')) {
             await deleteMySQLUsers(user.id);
         } else {
@@ -37,7 +37,6 @@ export default async function callBack(
     const userData = await createMySQLDeedsUser(userMember);
     if(!userData)
         return;
-
     const userManager = await createDeedsManager(user, userData.insertId);
     await connection.end();
     if(userManager) {

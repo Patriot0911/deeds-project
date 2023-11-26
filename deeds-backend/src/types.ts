@@ -29,3 +29,9 @@ export interface IDeed {
     goal: number;
     current: number;
 };
+
+export interface IUsersFilter {
+    deedId?: string;
+    userId?: string;
+    userName?: string;
+};

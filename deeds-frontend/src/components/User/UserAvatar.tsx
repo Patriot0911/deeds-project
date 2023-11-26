@@ -4,6 +4,7 @@ const UserAvatar = ({ avatar }: { avatar: string }) => {
         <img
             className={'user-avatar'}
             src={avatar}
+            alt={'user`s avatar'}
         />
     );
 };

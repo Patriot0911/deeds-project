@@ -1,11 +1,11 @@
 'use client';
 import { IUserInfo } from "@/types";
+import { useState } from "react";
 
 import DeedInfoBlock from "./UserInfoBlock";
 import DeedAvatar from "./UserAvatar";
 
 import './User.css';
-import { useState } from "react";
 
 const User = (props: IUserInfo) => {
     const [isOpen, setIsOpen] = useState<boolean>(false);

@@ -32,3 +32,18 @@ export interface IProgressionsListProps {
     isOpen: boolean;
     progressions: IDeed[];
 };
+
+export interface ISearchDeedsProps {
+    params: {
+        deedId: string;
+    }
+};
+
+export interface IDeedsPanelProps {
+    filter?: {
+        deedId?: string;
+        userName?: string;
+    };
+};
+
+export interface IUserListProps extends IDeedsPanelProps {};

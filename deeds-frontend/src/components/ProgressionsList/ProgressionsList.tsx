@@ -33,7 +33,7 @@ const ProgressionsList = ({ isOpen, progressions }: IProgressionsListProps) => {
                 goal={totalInfo.goal}
             />
             {
-                isOpen &&
+                (isOpen && progressions.length > 1) &&
                 progressions.map((item: IDeed, index) =>
                     <ProgressionBar
                         {...item}
