@@ -14,6 +14,12 @@ export interface IDeed {
     current: number;
 };
 
+export interface IDBDeed {
+    id: number;
+    deedName: string;
+    goal: number;
+};
+
 export interface IUserNameBoxProps {
     name: string;
 };
@@ -37,6 +43,10 @@ export interface ISearchDeedsProps {
     params: {
         deedId: string;
     }
+};
+
+export interface IDeedsSelectorProps {
+    deedsList: IDBDeed[]
 };
 
 export interface IDeedsPanelProps {

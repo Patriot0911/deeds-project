@@ -2,9 +2,10 @@ import { IUserInfo } from "../types";
 import { getDbUsers } from "../utils/mysql";
 
 const indexRouter = async (req, res) => {
+    const reqDeedId: string = req.query.id;
     const users: IUserInfo[] = [];
     const { deeds, dbUsers, progresses } = await getDbUsers({
-        deedId: req.query.id
+        deedId: reqDeedId
     });
 
     const deedsMap = new Map(deeds.map(
@@ -35,7 +36,10 @@ const indexRouter = async (req, res) => {
         });
     };
     res.status(progresses.length < 1 ? 400 : 200)
-        .send(users);
+        .json({
+            deeds: deeds,
+            users: users
+        });
 };
 
 

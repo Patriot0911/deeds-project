@@ -22,7 +22,8 @@ const ProgressionBar = (props: IProgressionBarProps) => {
             <div
                 className={'progress'}
                 style={{
-                    width: `${progress < 2 ? 2 : progress}%`
+                    width: `${progress < 2 ? 2 : progress}%`,
+                    backgroundColor: progress !== 100 ? `rgba(51, 226, 182, 0.712)` : `rgba(255, 239, 96, 0.712)`
                 }}
             />
         </div>
