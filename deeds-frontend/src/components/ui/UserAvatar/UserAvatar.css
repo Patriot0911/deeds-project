@@ -1,0 +1,6 @@
+.user-avatar {
+    height: 125px;
+    width: 125px;
+    border-radius: 100px;
+    border: 2px solid rgba(97, 95, 95, 0.637);
+}

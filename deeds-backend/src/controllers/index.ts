@@ -36,7 +36,7 @@ const indexRouter = async (req, res) => {
         });
     };
     res.status(progresses.length < 1 ? 400 : 200)
-        .json({
+        .send({
             deeds: deeds,
             users: users
         });

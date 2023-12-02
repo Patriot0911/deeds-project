@@ -1,3 +1,5 @@
+import { ReactNode } from "react";
+
 export interface IChildrenProps {
     children: React.ReactNode;
 };
@@ -39,21 +41,27 @@ export interface IProgressionsListProps {
     progressions: IDeed[];
 };
 
-export interface ISearchDeedsProps {
+export interface ISearchDeedsPageProps {
     params: {
-        deedId: string;
+        deedId: number;
     }
 };
 
 export interface IDeedsSelectorProps {
-    deedsList: IDBDeed[]
+    deedsList: IDBDeed[];
 };
 
 export interface IDeedsPanelProps {
     filter?: {
-        deedId?: string;
+        deedId?: number;
         userName?: string;
     };
 };
 
-export interface IUserListProps extends IDeedsPanelProps {};
+export interface IUserListProps {
+    users: IUserInfo[];
+};
+
+export interface IPanelWrapperProps {
+    children: ReactNode;
+};

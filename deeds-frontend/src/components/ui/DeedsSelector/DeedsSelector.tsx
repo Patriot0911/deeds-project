@@ -1,7 +1,7 @@
 'use client';
 import { IDeedsSelectorProps } from "@/types";
 import DeedOption from "./DeedOption";
-import { RedirectType, redirect } from "next/navigation";
+import { redirect } from "next/navigation";
 import { ChangeEvent } from "react";
 import './DeedsSelector.css';
 
@@ -20,7 +20,7 @@ const DeedsSelector = ({ deedsList }: IDeedsSelectorProps) => {
             onChange={deedsSelectCallback}
         >
             {
-                deedsList.map(
+                deedsList?.map(
                     (deed, index) =>
                     <DeedOption
                         {...deed}

@@ -2,7 +2,7 @@ import DeedsPanel from '@/components/DeedsPanel/DeedsPanel';
 
 import './global.css';
 
-const Home = () => {
+const HomePage = () => {
 	return (
 		<main>
 			<DeedsPanel />
@@ -10,4 +10,4 @@ const Home = () => {
 	);
 };
 
-export default Home;
+export default HomePage;

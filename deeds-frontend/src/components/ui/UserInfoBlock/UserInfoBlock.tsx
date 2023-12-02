@@ -1,6 +1,8 @@
 import { IUserInfoBlockProps } from "@/types";
-import UserNameBox from "../ui/UserName/UserName";
-import ProgressionsList from "../ProgressionsList/ProgressionsList";
+import UserNameBox from "../UserName/UserName";
+import ProgressionsList from "../../ProgressionsList/ProgressionsList";
+
+import './UserInfoBlock.css';
 
 const UserInfoBlock = (props: IUserInfoBlockProps) => {
     return (

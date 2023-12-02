@@ -2,8 +2,8 @@
 import { IUserInfo } from "@/types";
 import { useState } from "react";
 
-import DeedInfoBlock from "./UserInfoBlock";
-import DeedAvatar from "./UserAvatar";
+import DeedInfoBlock from "../ui/UserInfoBlock/UserInfoBlock";
+import DeedAvatar from "../ui/UserAvatar/UserAvatar";
 
 import './User.css';
 

@@ -1,0 +1,9 @@
+.info-block {
+    flex-grow: 1;
+    margin-top: 70px;
+    flex-direction: column;
+}
+
+.items-down {
+    margin-top: auto;
+}

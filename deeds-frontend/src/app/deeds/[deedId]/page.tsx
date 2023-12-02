@@ -1,7 +1,7 @@
+import type { ISearchDeedsPageProps } from "@/types";
 import DeedsPanel from "@/components/DeedsPanel/DeedsPanel";
-import { ISearchDeedsProps } from "@/types";
 
-const SearchDeeds = ({ params }: ISearchDeedsProps) => {
+const SearchDeedsPage = ({ params }: ISearchDeedsPageProps) => {
     return (
 		<main>
 			<DeedsPanel
@@ -13,4 +13,4 @@ const SearchDeeds = ({ params }: ISearchDeedsProps) => {
     );
 };
 
-export default SearchDeeds;
+export default SearchDeedsPage;

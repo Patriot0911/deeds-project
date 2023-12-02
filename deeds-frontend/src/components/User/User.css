@@ -19,19 +19,3 @@
 .open {
     border: 3px solid #00A3FF;
 }
-
-.user-avatar {
-    height: 125px;
-    width: 125px;
-    border-radius: 100px;
-    border: 2px solid rgba(97, 95, 95, 0.637);
-}
-
-.info-block {
-    flex-grow: 1;
-    margin-top: 70px;
-    flex-direction: column;
-}
-.items-down {
-    margin-top: auto;
-}
