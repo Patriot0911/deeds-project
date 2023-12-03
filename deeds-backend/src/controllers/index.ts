@@ -5,7 +5,7 @@ const indexRouter = async (req, res) => {
     const reqDeedId: string = req.query.id;
     const users: IUserInfo[] = [];
     const { deeds, dbUsers, progresses } = await getDbUsers({
-        deedId: reqDeedId
+        deedId: parseInt(reqDeedId)
     });
 
     const deedsMap = new Map(deeds.map(

@@ -24,7 +24,7 @@ export const getListOfUsers = async () => {
         return [];
     return usersList;
 };
-export const getUsersPorgressions = async (deedId?: string) => {
+export const getUsersPorgressions = async (deedId?: string | number) => {
     const [rawProgressions] = await pool.execute(`
         Select * from deedsdb.users_progressions
         ${

@@ -31,7 +31,7 @@ export interface IDeed {
 };
 
 export interface IUsersFilter {
-    deedId?: string;
-    userId?: string;
+    deedId?: string | number;
+    userId?: string | number;
     userName?: string;
 };

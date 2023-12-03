@@ -53,7 +53,7 @@ export interface IDeedsSelectorProps {
 
 export interface IDeedsPanelProps {
     filter?: {
-        deedId?: number;
+        deedId?: string;
         userName?: string;
     };
 };
