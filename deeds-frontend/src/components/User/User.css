@@ -19,3 +19,9 @@
 .open {
     border: 3px solid #00A3FF;
 }
+
+@media (width < 440px) {
+    .user-wrapper {
+        font-size: 0.7rem;
+    }
+}
