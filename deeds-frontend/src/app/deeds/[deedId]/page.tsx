@@ -6,7 +6,7 @@ const SearchDeedsPage = ({ params }: ISearchDeedsPageProps) => {
 		<main>
 			<DeedsPanel
 				filter={{
-					deedId: params.deedId
+					deedId: params.deedId ? parseInt(params.deedId) : undefined
 				}}
 			/>
 		</main>

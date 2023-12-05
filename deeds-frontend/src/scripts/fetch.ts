@@ -1,4 +1,3 @@
-
 const getFetchData = async (fetchURL: string) => {
     try {
         return await fetch(
@@ -11,7 +10,5 @@ const getFetchData = async (fetchURL: string) => {
         return undefined;
     };
 };
-
-// I am sleepy so it's the best solution I came to
 
 export default getFetchData;

@@ -1,7 +1,6 @@
 import type { IDeedsPanelProps } from '@/types';
-import UsersList from '../UsersList/UsersList';
-import DeedsSelector from '../ui/DeedsSelector/DeedsSelector';
 import PanelWrapper from '../ui/PanelWrapper/PanelWrapper';
+import SuccessPanelInfo from './SuccessPanelInfo';
 import getFetchData from '@/scripts/fetch';
 
 import './DeedsPanel.css';
@@ -17,23 +16,11 @@ const DeedsPanel = async (props: IDeedsPanelProps) => {
                 res ?
                 <SuccessPanelInfo
                     data={await res.json()}
+                    currentDeed={props.filter?.deedId}
                 /> :
-                <ErrorPanelInfo />
+                <ErrorPanelInfo />  // to ERROR MESSAGE
             }
         </PanelWrapper>
-    );
-};
-
-const SuccessPanelInfo = async ({ data }: { data: any }) => {
-    return (
-        <>
-            <DeedsSelector
-                deedsList={data.deeds}
-            />
-            <UsersList
-                users={data.users}
-            />
-        </>
     );
 };
 

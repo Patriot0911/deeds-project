@@ -43,17 +43,18 @@ export interface IProgressionsListProps {
 
 export interface ISearchDeedsPageProps {
     params: {
-        deedId: number;
+        deedId?: string;
     }
 };
 
 export interface IDeedsSelectorProps {
     deedsList: IDBDeed[];
+    curDeedId?: number;
 };
 
 export interface IDeedsPanelProps {
     filter?: {
-        deedId?: string;
+        deedId?: number;
         userName?: string;
     };
 };
@@ -64,4 +65,13 @@ export interface IUserListProps {
 
 export interface IPanelWrapperProps {
     children: ReactNode;
+};
+
+export interface IUserAvatarProps {
+    avatar: string;
+};
+
+export interface ISuccessPanelInfoProps {
+    data: any;
+    currentDeed?: number;
 };

@@ -1,26 +1,31 @@
 'use client';
 import { IDeedsSelectorProps } from "@/types";
-import DeedOption from "./DeedOption";
-import { redirect } from "next/navigation";
+import getListWithSelectedDeed from "@/scripts/getDeedsWithSelectedId";
+import { useRouter } from "next/navigation";
 import { ChangeEvent } from "react";
+import DeedOption from "./DeedOption";
 import './DeedsSelector.css';
 
-const DeedsSelector = ({ deedsList }: IDeedsSelectorProps) => {
+const DeedsSelector = ({ deedsList, curDeedId }: IDeedsSelectorProps) => {
+    const router = useRouter()
+
     const deedsSelectCallback = (eventData: ChangeEvent<HTMLSelectElement>) => {
-        const optionValue = eventData.target.value;
-        if(optionValue)
+        const optionValue = parseInt(eventData.target.value);
+        console.log(optionValue);
+        if(!optionValue) {
+            router.push(`/`);
             return;
-        redirect(
-            `http://localhost:3000/deeds/${optionValue}`
-        )
+        }
+        router.push(`/deeds/${optionValue}`);
     };
+
     return (
         <select
             className={'deeds-selector'}
             onChange={deedsSelectCallback}
         >
             {
-                deedsList?.map(
+                getListWithSelectedDeed(deedsList, curDeedId).map(
                     (deed, index) =>
                     <DeedOption
                         {...deed}

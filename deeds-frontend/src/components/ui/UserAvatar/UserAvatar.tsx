@@ -1,13 +1,10 @@
-import Image from "next/image";
-
+import { IUserAvatarProps } from '@/types';
 import './UserAvatar.css';
 
-const UserAvatar = ({ avatar }: { avatar: string }) => {
+const UserAvatar = ({ avatar }: IUserAvatarProps) => {
     return (
         <img
             className={'user-avatar'}
-            // width={125}
-            // height={125}
             src={avatar}
             alt={'user`s avatar'}
         />
