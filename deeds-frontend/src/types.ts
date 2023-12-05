@@ -75,3 +75,7 @@ export interface ISuccessPanelInfoProps {
     data: any;
     currentDeed?: number;
 };
+
+export interface IErrorMessageProps {
+    info: string;
+};

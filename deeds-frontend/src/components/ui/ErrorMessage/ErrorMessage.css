@@ -1,0 +1,9 @@
+.error-message {
+    background-color: rgba(165, 42, 42, 0.563);
+    padding: 2px;
+    border-radius: 1px;
+    border: 1px solid rgba(0, 0, 0, 0.622);
+    color: aliceblue;
+    text-align: center;
+    width: 100%;
+}

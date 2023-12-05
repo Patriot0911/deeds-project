@@ -1,5 +1,6 @@
 import type { IDeedsPanelProps } from '@/types';
 import PanelWrapper from '../ui/PanelWrapper/PanelWrapper';
+import ErrorMessage from '../ui/ErrorMessage/ErrorMessage';
 import SuccessPanelInfo from './SuccessPanelInfo';
 import getFetchData from '@/scripts/fetch';
 
@@ -18,17 +19,11 @@ const DeedsPanel = async (props: IDeedsPanelProps) => {
                     data={await res.json()}
                     currentDeed={props.filter?.deedId}
                 /> :
-                <ErrorPanelInfo />  // to ERROR MESSAGE
+                <ErrorMessage
+                    info={'Request error. Try again later'}
+                />
             }
         </PanelWrapper>
-    );
-};
-
-const ErrorPanelInfo = () => {
-    return (
-        <h1>
-            Request error. Try again later
-        </h1>
     );
 };
 
