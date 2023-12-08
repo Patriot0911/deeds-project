@@ -1,6 +1,6 @@
 import { ApplicationCommandOptionType, ChatInputCommandInteraction } from "discord.js";
 import deedClient from "../classes/deedClient";
-import { getMysqlConnection } from "../utils/helpers/mysql-helpers";
+import { pool } from "../utils/helpers/mysql-helpers";
 import { TCommandInfo } from "../types";
 
 export default async function callBack(
@@ -8,14 +8,12 @@ export default async function callBack(
     interaction: ChatInputCommandInteraction
 ) {
     const options = interaction.options;
-    const connection = await getMysqlConnection();
-    await connection.execute(`
+    await pool.execute(`
         Delete From deedsdb.users_progressions Where deedId = ${options.getNumber('deedid')};
     `);
-    await connection.execute(`
+    await pool.execute(`
         Delete From deedsdb.deeds Where id = ${options.getNumber('deedid')};
     `);
-    connection.end();
 
     await interaction.reply({
         ephemeral: true,

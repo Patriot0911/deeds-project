@@ -1,7 +1,7 @@
 import {  ButtonInteraction } from "discord.js";
 import deedClient from "../classes/deedClient";
-import { IDeed, TButtonInfo } from "../types";
-import { getMySQLDeedProgress, getMySQLDeeds, getMysqlConnection, updateMySQLUserProgress } from "../utils/helpers/mysql-helpers";
+import { TButtonInfo } from "../types";
+import { getMySQLDeedProgress, getMySQLDeeds, updateMySQLUserProgress } from "../utils/helpers/mysql-helpers";
 import { progressEvents } from "../utils/progress-event";
 
 export const info: TButtonInfo = {

@@ -1,6 +1,6 @@
 import { ApplicationCommandOptionType, ChatInputCommandInteraction } from "discord.js";
 import deedClient from "../classes/deedClient";
-import { createMySQLDeed, getMySQLUsers, getMysqlConnection } from "../utils/helpers/mysql-helpers";
+import { createMySQLDeed, getMySQLUsers, pool } from "../utils/helpers/mysql-helpers";
 import { IUser, TCommandInfo } from "../types";
 
 export default async function callBack(
@@ -12,17 +12,15 @@ export default async function callBack(
     const deedGoal = options.getNumber('goal');
     if(!deedName || !deedGoal)
         return;
-    const connection = await getMysqlConnection();
     const deedData = await createMySQLDeed(deedName, deedGoal);
     const usersData = await getMySQLUsers();
     if(usersData.length > 0) {
         const usersValues = geNewUserValues(usersData, deedData.insertId);
-        await connection.execute(`
+        await pool.execute(`
             Insert into deedsdb.users_progressions (deedId, userId, progress)
                 Values ${usersValues}
         `);
     };
-    await connection.end();
     await interaction.reply({
         ephemeral: true,
         content: 'Successfully'

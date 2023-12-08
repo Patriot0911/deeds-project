@@ -4,37 +4,33 @@ import { IDeed, IDeedProgress, IMySQLSearchParams, IUser } from 'src/types';
 import mysql, { ResultSetHeader } from 'mysql2/promise';
 import 'dotenv/config';
 
-export const getMysqlConnection = async () => {
-    const connection = await mysql.createConnection({
-        host: 'localhost',
-        user: process.env.DBUSERNAME,
-        password: process.env.DBPASSWORD,
-        database: process.env.DBNAME
-    });
-    return connection;
+const dbInfo = {
+    host: 'localhost',
+    user: process.env.DBUSERNAME,
+    password: process.env.DBPASSWORD,
+    database: process.env.DBNAME
 };
 
+export const pool = mysql.createPool(dbInfo);
+
+
 export const getMySQLDeedProgress = async (userId: number | string, deedId: number | string) => {
-    const connection = await getMysqlConnection();
-    const [rawDeedProgress] = await connection.execute(`
+    const [rawDeedProgress] = await pool.execute(`
         SELECT * FROM deedsdb.users_progressions
         WHERE (deedId = ${deedId} AND userId = ${userId});
     `);
-    await connection.end();
     const DeedProgress = rawDeedProgress as IDeedProgress[];
     if(!DeedProgress || DeedProgress.length < 1)
         return;
     return DeedProgress[0];
 };
 export const getMySQLDeeds = async (deedId?: number | string) => {
-    const connection = await getMysqlConnection();
-    const [rawDeedsList] = await connection.execute(`
+    const [rawDeedsList] = await pool.execute(`
         SELECT * FROM deedsdb.deeds
         ${
             deedId && `Where id = ${deedId}`
         };
     `);
-    await connection.end();
     const deedsList = rawDeedsList as IDeed[];
     if(!deedsList || deedsList.length < 1)
         return;
@@ -48,65 +44,51 @@ export const getMySQLUsers = async (params?: IMySQLSearchParams) => {
         `WHERE id = ${params.userId}`
     ) : undefined;
 
-    const connection = await getMysqlConnection();
-    const [rawSelectedUsers] = await connection.execute(`
+    const [rawSelectedUsers] = await pool.execute(`
         SELECT * FROM deedsdb.users
             ${searchParams ? searchParams : ''}
         ;
     `);
-    await connection.end();
     return rawSelectedUsers as IUser[];
 };
 
 export const createMySQLDeed = async (name: string, goal: number) => {
-    const connection = await getMysqlConnection();
-    const [rawNewDeed] = await connection.execute(`
+    const [rawNewDeed] = await pool.execute(`
         Insert into deedsdb.deeds (deedName, goal)
         Values ('${name}', ${goal});
     `);
-    connection.end();
     return rawNewDeed as ResultSetHeader;
 };
 export const createMySQLDeedsUser = async (member: GuildMember) => {
-    const connection = await getMysqlConnection();
     const avatar = getAvatar(member.user);
-    const insertedUser = (await connection.execute(`
+    const insertedUser = (await pool.execute(`
         Insert into deedsdb.users (discordId, username, avatar) Values
         ('${member.id}', '${member.displayName}', '${avatar}');
     `))[0];
-    if(!insertedUser) {
-        await connection.end();
+    if(!insertedUser) 
         return;
-    };
     const deedsList = await getMySQLDeeds();
-    if(!deedsList) {
-        await connection.end();
+    if(!deedsList)
         return;
-    };
 
     const deedsValues = getNewDeedsInsertValues(deedsList, (insertedUser as ResultSetHeader).insertId);
-    if(!deedsValues) {
-        await connection.end();
+    if(!deedsValues) 
         return;
-    };
-    await connection.execute(`
+    await pool.execute(`
         Insert into deedsdb.users_progressions (deedId, userId, progress)
             Values ${deedsValues};
     `);
 
-    await connection.end();
     return insertedUser as ResultSetHeader;
 };
 
 
 export const updateMySQLUserAvatar = async (user: User) => {
-    const connection = await getMysqlConnection();
-    await connection.execute(`
+    await pool.execute(`
         UPDATE deedsdb.users
         SET avatar = "${getAvatar(user)}"
         WHERE discordId = ${user.id};
     `);
-    connection.end();
 };
 export const updateMySQLUserProgress = async(
     userId: number | string,
@@ -114,8 +96,7 @@ export const updateMySQLUserProgress = async(
     count: number,
     increment?: boolean
 ) => {
-    const connection = await getMysqlConnection();
-    await connection.execute(`
+    await pool.execute(`
         UPDATE deedsdb.users_progressions
         SET
         ${
@@ -128,31 +109,27 @@ export const updateMySQLUserProgress = async(
             deedId = ${deedId}
         );
     `);
-    await connection.end();
 };
 
 export const deleteMySQLUsers = async (discordId?: string, userId?: number) => {
     if(!discordId && !userId)
         return;
-    const connection = await getMysqlConnection();
     const selectedUsers = await getMySQLUsers(
         {
             discordId: discordId,
             userId: userId
         }
     );
-    if(!selectedUsers || selectedUsers.length < 1) {
-        await connection.end();
+    if(!selectedUsers || selectedUsers.length < 1) 
         return;
-    };
     for(let i = 0; i < selectedUsers.length; i++) {
         if(!selectedUsers[i].id)
             continue;
-        await connection.execute(`
+        await pool.execute(`
             DELETE FROM deedsdb.users_progressions WHERE (userId = ${selectedUsers[i].id});
         `);
     };
-    await connection.execute(`
+    await pool.execute(`
         DELETE FROM deedsdb.users
         WHERE (
             ${
@@ -162,7 +139,6 @@ export const deleteMySQLUsers = async (discordId?: string, userId?: number) => {
             }
         );
     `);
-    await connection.end();
 };
 
 const getNewDeedsInsertValues = (deedsList: IDeed[], userId: number, oldDeedsValue = '', index = 0): any => {

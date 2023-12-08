@@ -1,6 +1,6 @@
 import { ApplicationCommandOptionType, ChatInputCommandInteraction, User } from "discord.js";
 import deedClient from "../classes/deedClient";
-import { getMysqlConnection } from "../utils/helpers/mysql-helpers";
+import { pool } from "../utils/helpers/mysql-helpers";
 import { TCommandInfo } from "../types";
 
 export default async function callBack(
@@ -12,17 +12,15 @@ export default async function callBack(
 
     if(!user || !interaction.guild)
         return;
-    const connection = await getMysqlConnection();
-    const [rawUsersId] = await connection.execute(`
+    const [rawUsersId] = await pool.execute(`
         Select id From deedsdb.users Where (discordId = ${options.getUser('user')!.id});
     `);
     const userId = (rawUsersId as User[])[0].id;
-    await connection.execute(`
+    await pool.execute(`
         Update deedsdb.users_progressions
         SET progress = ${options.getNumber('value')}
         Where (deedId = ${options.getNumber('deedid')} AND userId = ${userId});
     `);
-    connection.end();
     await interaction.reply({
         ephemeral: true,
         content: 'Succesfully!'
